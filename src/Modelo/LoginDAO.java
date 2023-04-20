@@ -14,6 +14,11 @@ public class LoginDAO {
     ResultSet rs;
     Conexion cn = new Conexion();
     
+    /*
+        Dado que se realiza una instancia dentro del
+        método log, al registrar e iniciar sesión, la contraseña
+        encriptada devuelta es la misma debido al método estático.
+    */
     public login log(String correo, String pass){
         login l = new login();
         String sql = "SELECT * FROM usuarios WHERE correo = ? AND pass = ?";
@@ -36,7 +41,10 @@ public class LoginDAO {
         }
         return l;
     }
-    
+    /*
+        En la BD la contraseña se estaría guardando como un código cifrado
+        al momento de de ejecutar la query para insertar los datos del usuario.
+    */
     public boolean Registrar(login reg){
         String sql = "INSERT INTO usuarios (nombre, correo, pass, rol) VALUES (?,?,?,?)";
         try {
