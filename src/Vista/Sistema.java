@@ -2302,7 +2302,20 @@ public final class Sistema extends javax.swing.JFrame {
     private void cbxRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxRolActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxRolActionPerformed
-
+    /*
+    MODIFICACION
+    @DanielSantos
+    Objetivo: Implementacion de funcionalidad de edicion y eliminacion de usuarios
+    */
+    
+    /*
+    En la pestaña de usuario sera necesario agregar los botones de modificar y eliminar
+    Esto botones deberan llamar a las nuevas funciones que seran agregadas en LoginDAO
+    para modificar la informacion almacenada en la base de datos
+    
+    El boton modificar enviara la informacion del formulario del usuario que se esta editando
+    El boton eliminar enviara el id del usuario seleccionado en la tabla
+    */
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         // TODO add your handling code here:
         jTabbedPane1.setSelectedIndex(6);

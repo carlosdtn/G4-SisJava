@@ -74,4 +74,27 @@ public class LoginDAO {
        }
        return Lista;
    }
+    
+    /*
+    MODIFICACION
+    @DanielSantos
+    Objetivo: Implementacion de funcionalidad de edicion y eliminacion de usuarios
+    */
+    
+    /*
+    El sistema actual hace uso del LoginDAO para realizar el registro y 
+    visualizacion de los usuarios registrados en la base de datos
+    
+    Para mejorar la funcionalidad se desea implementar las funciones de edicion 
+    de usuario y elminacion de usuario
+    
+    La funcion edicion de usuario debe usar el query update y requiere el id del
+    usuario que se desea editar y la nueva informacion del usuario, estos datos se conseguiran
+    mediante el formulario de la pestaña Usuario de la vista Sistema
+    
+    La funcion eliminar usuario usara el query delete y requerira el id del usuario
+    que se desea eliminar, este id se puede obtener de la tabla de usuarios en la 
+    pestaña Usuarios de la vista Sistema
+    
+    */
 }
