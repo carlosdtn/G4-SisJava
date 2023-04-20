@@ -1,3 +1,2 @@
-/dist/
-/bin/build/
-/bin/nbproject/private/
+/build
+/nbproject
