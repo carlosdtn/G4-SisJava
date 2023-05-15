@@ -74,7 +74,7 @@ public class LoginDAO {
        }
        return Lista;
    }
-    
+        
     /*
     MODIFICACION
     @DanielSantos
@@ -97,4 +97,58 @@ public class LoginDAO {
     pestaña Usuarios de la vista Sistema
     
     */
+    
+        public boolean Modificar(login reg){
+        String sql = "UPDATE usuarios SET nombre = ?, correo= ?, pass = ?, rol = ? WHERE id = ?";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, reg.getNombre());
+            ps.setString(2, reg.getCorreo());
+            ps.setString(3, reg.getPass());
+            ps.setString(4, reg.getRol());
+            ps.setInt(5, reg.getId());
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        } finally {
+             try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+    
+    public boolean Eliminar(int id){
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        } finally {
+             try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
 }
