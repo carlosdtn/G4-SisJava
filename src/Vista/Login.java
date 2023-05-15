@@ -38,13 +38,19 @@ public class Login extends javax.swing.JFrame {
             }
         }
     }
+    /*
+    MODIFICACIÓN
+    @Carlos Tarmeño
+    - Se agregó una validación extra del objeto lg en el condicional para
+    mantener el mensaje de "Correo o la Contraseña incorrecta".
+     */
     public void validar(){
         String correo = txtCorreo.getText();
         String pass = String.valueOf(txtPass.getPassword());
         if (!"".equals(correo) || !"".equals(pass)) {
             
             lg = login.log(correo, pass);
-            if (lg.getCorreo()!= null && lg.getPass() != null) {
+            if (lg != null && lg.getCorreo()!= null && lg.getPass() != null) {
                 barra.setVisible(true);
                 contador = -1;
                 barra.setValue(0);
