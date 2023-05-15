@@ -102,8 +102,7 @@ public class LoginDAO {
             }
         }
     }
-
-
+  
     /*
     MODIFICACIÓN
     @Jorge Marin
@@ -145,5 +144,82 @@ public class LoginDAO {
         }
         return Lista;
     }
-
+   
+    
+    /*
+    MODIFICACION
+    @DanielSantos
+    Objetivo: Implementacion de funcionalidad de edicion y eliminacion de usuarios
+    */
+    
+    /*
+    El sistema actual hace uso del LoginDAO para realizar el registro y 
+    visualizacion de los usuarios registrados en la base de datos
+    
+    Para mejorar la funcionalidad se desea implementar las funciones de edicion 
+    de usuario y elminacion de usuario
+    
+    La funcion edicion de usuario debe usar el query update y requiere el id del
+    usuario que se desea editar y la nueva informacion del usuario, estos datos se conseguiran
+    mediante el formulario de la pestaña Usuario de la vista Sistema
+    
+    La funcion eliminar usuario usara el query delete y requerira el id del usuario
+    que se desea eliminar, este id se puede obtener de la tabla de usuarios en la 
+    pestaña Usuarios de la vista Sistema
+    
+    */
+    
+        public boolean Modificar(login reg){
+        String sql = "UPDATE usuarios SET nombre = ?, correo= ?, pass = ?, rol = ? WHERE id = ?";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, reg.getNombre());
+            ps.setString(2, reg.getCorreo());
+            ps.setString(3, reg.getPass());
+            ps.setString(4, reg.getRol());
+            ps.setInt(5, reg.getId());
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        } finally {
+             try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+    
+    public boolean Eliminar(int id){
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        } finally {
+             try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
 }

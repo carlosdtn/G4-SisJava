@@ -58,6 +58,7 @@ public final class Sistema extends javax.swing.JFrame {
     DefaultTableModel tmp = new DefaultTableModel();
     int item;
     double Totalpagar = 0.00;
+    int idUsuarioEditado;
 
     public Sistema() {
         initComponents();
@@ -364,7 +365,7 @@ public final class Sistema extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         txtPass = new javax.swing.JPasswordField();
-        btnIniciar = new javax.swing.JButton();
+        btnRegistrarUsuario = new javax.swing.JButton();
         jLabel36 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
@@ -374,6 +375,8 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jLabel39 = new javax.swing.JLabel();
+        btnEliminarUsuario = new javax.swing.JButton();
+        btnModificarUsuario = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         TableUsuarios = new javax.swing.JTable();
 
@@ -1656,11 +1659,11 @@ public final class Sistema extends javax.swing.JFrame {
 
         jLabel34.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
         jLabel34.setText("Correo Electrónico:");
-        jPanel13.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, -1));
+        jPanel13.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, -1, -1));
 
         jLabel35.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
         jLabel35.setText("Contraseña:");
-        jPanel13.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, -1));
+        jPanel13.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, -1, -1));
 
         txtCorreo.setBackground(new java.awt.Color(204, 204, 204));
         txtCorreo.setBorder(null);
@@ -1669,33 +1672,38 @@ public final class Sistema extends javax.swing.JFrame {
                 txtCorreoActionPerformed(evt);
             }
         });
-        jPanel13.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 226, 30));
+        jPanel13.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 80, 230, 30));
 
         txtPass.setBackground(new java.awt.Color(204, 204, 204));
         txtPass.setBorder(null);
-        jPanel13.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 226, 30));
-
-        btnIniciar.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        btnIniciar.setText("Registrar usuario");
-        btnIniciar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnIniciar.addActionListener(new java.awt.event.ActionListener() {
+        txtPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIniciarActionPerformed(evt);
+                txtPassActionPerformed(evt);
             }
         });
-        jPanel13.add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 226, 40));
+        jPanel13.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 140, 230, 30));
+
+        btnRegistrarUsuario.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnRegistrarUsuario.setText("Registrar usuario");
+        btnRegistrarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarUsuarioActionPerformed(evt);
+            }
+        });
+        jPanel13.add(btnRegistrarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 300, 230, 32));
 
         jLabel36.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
         jLabel36.setText("Nombre Completo:");
-        jPanel13.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, -1));
+        jPanel13.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, -1, -1));
 
         txtNombre.setBackground(new java.awt.Color(204, 204, 204));
         txtNombre.setBorder(null);
-        jPanel13.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 226, 30));
+        jPanel13.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 200, 230, 30));
 
         jLabel37.setFont(new java.awt.Font("Verdana", 3, 14)); // NOI18N
         jLabel37.setText("Rol:");
-        jPanel13.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
+        jPanel13.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
 
         cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Asistente" }));
         cbxRol.addActionListener(new java.awt.event.ActionListener() {
@@ -1703,7 +1711,7 @@ public final class Sistema extends javax.swing.JFrame {
                 cbxRolActionPerformed(evt);
             }
         });
-        jPanel13.add(cbxRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 226, 30));
+        jPanel13.add(cbxRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 260, 230, 30));
 
         jPanel15.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -1711,14 +1719,14 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 226, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel13.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 226, 2));
+        jPanel13.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 110, 230, 2));
 
         jPanel16.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -1726,14 +1734,14 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 226, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel13.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 226, 2));
+        jPanel13.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 170, 230, 2));
 
         jPanel17.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -1741,38 +1749,58 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 226, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 2, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel13.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 226, 2));
+        jPanel13.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 230, 230, 2));
 
         jPanel18.setBackground(new java.awt.Color(241, 213, 129));
 
         jLabel39.setFont(new java.awt.Font("Verdana", 3, 18)); // NOI18N
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel39.setText("Nuevo Usuario");
+        jLabel39.setMaximumSize(new java.awt.Dimension(148, 30));
+        jLabel39.setMinimumSize(new java.awt.Dimension(148, 30));
+        jLabel39.setPreferredSize(new java.awt.Dimension(148, 30));
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 4, Short.MAX_VALUE))
+            .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel39)
-                .addContainerGap(16, Short.MAX_VALUE))
+            .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
         jPanel13.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 50));
+
+        btnEliminarUsuario.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnEliminarUsuario.setText("Eliminar");
+        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEliminarUsuario.setEnabled(false);
+        btnEliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarUsuarioActionPerformed(evt);
+            }
+        });
+        jPanel13.add(btnEliminarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 340, 110, 32));
+
+        btnModificarUsuario.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnModificarUsuario.setText("Modificar");
+        btnModificarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnModificarUsuario.setEnabled(false);
+        btnModificarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarUsuarioActionPerformed(evt);
+            }
+        });
+        jPanel13.add(btnModificarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 340, 110, 32));
 
         jPanel12.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 49, 280, 380));
 
@@ -1784,19 +1812,30 @@ public final class Sistema extends javax.swing.JFrame {
             new String [] {
                 "           Id", "         Nombre", "         Correo", "            Rol"
             }
-        ));
-        jScrollPane6.setViewportView(TableUsuarios);
+        )
+        {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        }
+    );
+    TableUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            TableUsuariosMouseClicked(evt);
+        }
+    });
+    jScrollPane6.setViewportView(TableUsuarios);
 
-        jPanel12.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 560, 380));
+    jPanel12.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 560, 380));
 
-        jTabbedPane1.addTab("7", jPanel12);
+    jTabbedPane1.addTab("7", jPanel12);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 900, 460));
+    getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 900, 460));
 
-        pack();
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+    private void btnRegistrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarUsuarioActionPerformed
         if (txtNombre.getText().equals("") || txtCorreo.getText().equals("") || txtPass.getPassword().equals("")) {
             JOptionPane.showMessageDialog(null, "Todo los campos son requeridos");
         } else {
@@ -1847,7 +1886,7 @@ public final class Sistema extends javax.swing.JFrame {
             //fin enviar correo
             
         }
-    }//GEN-LAST:event_btnIniciarActionPerformed
+    }//GEN-LAST:event_btnRegistrarUsuarioActionPerformed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
         // TODO add your handling code here:
@@ -2302,7 +2341,20 @@ public final class Sistema extends javax.swing.JFrame {
     private void cbxRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxRolActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxRolActionPerformed
-
+    /*
+    MODIFICACION
+    @DanielSantos
+    Objetivo: Implementacion de funcionalidad de edicion y eliminacion de usuarios
+    */
+    
+    /*
+    En la pestaña de usuario sera necesario agregar los botones de modificar y eliminar
+    Esto botones deberan llamar a las nuevas funciones que seran agregadas en LoginDAO
+    para modificar la informacion almacenada en la base de datos
+    
+    El boton modificar enviara la informacion del formulario del usuario que se esta editando
+    El boton eliminar enviara el id del usuario seleccionado en la tabla
+    */
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         // TODO add your handling code here:
         jTabbedPane1.setSelectedIndex(6);
@@ -2364,6 +2416,79 @@ public final class Sistema extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(0);
     }//GEN-LAST:event_btnNuevaVentaActionPerformed
 
+    private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPassActionPerformed
+
+    private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
+        String user = this.getNombreUsuario();
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea eliminar al usuario " + user + " ?", "Eliminar usuario", JOptionPane.YES_NO_OPTION);
+        if( opcion == 0 ) {
+            if (login.Eliminar(idUsuarioEditado)) {
+                JOptionPane.showMessageDialog(null, "Usuario eliminado");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar el usuario");
+            }
+            LimpiarTable();
+            ListarUsuarios();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarUsuarioActionPerformed
+
+    private void btnModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarUsuarioActionPerformed
+        if (txtNombre.getText().equals("") || txtCorreo.getText().equals("") || String.valueOf(txtPass.getPassword()).equals("")) {
+            JOptionPane.showMessageDialog(null, "Todo los campos son requeridos");
+        } else {
+            String user = this.getNombreUsuario();
+            int opcion = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea modificar al usuario " + user + " ?", "Modificar usuario", JOptionPane.YES_NO_OPTION);
+            
+            if( opcion == 0 ) {
+                String correo = txtCorreo.getText();
+                String pass = String.valueOf(txtPass.getPassword());
+                String nom = txtNombre.getText();
+                String rol = cbxRol.getSelectedItem().toString();
+                lg.setNombre(nom);
+                lg.setCorreo(correo);
+                lg.setPass(pass);
+                lg.setRol(rol);
+                lg.setId(idUsuarioEditado);
+                if (login.Modificar(lg)) {
+                    JOptionPane.showMessageDialog(null, "Usuario modificado");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al modificar el usuario");
+                }
+                LimpiarTable();
+                ListarUsuarios();
+            } 
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificarUsuarioActionPerformed
+
+    private String getNombreUsuario() {
+        int fila = TableUsuarios.getSelectedRow();
+        String nombre = TableUsuarios.getValueAt(fila, 1).toString();
+        return nombre;
+    }
+    
+    private void TableUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableUsuariosMouseClicked
+        if (evt.getClickCount() == 1){
+            btnModificarUsuario.setEnabled(true);
+            btnEliminarUsuario.setEnabled(true);
+
+            int fila = TableUsuarios.getSelectedRow();
+            
+            idUsuarioEditado = Integer.parseInt(TableUsuarios.getValueAt(fila, 0).toString()) ;
+            String correo = TableUsuarios.getValueAt(fila, 2).toString();
+            String pass = "";
+            String nombre = TableUsuarios.getValueAt(fila, 1).toString();
+            String rol = TableUsuarios.getValueAt(fila, 3).toString();
+            
+            cbxRol.setSelectedItem(rol);
+            txtCorreo.setText(correo);
+            txtPass.setText(pass);
+            txtNombre.setText(nombre);       
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_TableUsuariosMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -2418,12 +2543,13 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnEliminarPro;
     private javax.swing.JButton btnEliminarProveedor;
+    private javax.swing.JButton btnEliminarUsuario;
     private javax.swing.JButton btnEliminarventa;
     private javax.swing.JButton btnGenerarVenta;
     private javax.swing.JButton btnGraficar;
     private javax.swing.JButton btnGuardarCliente;
     private javax.swing.JButton btnGuardarpro;
-    private javax.swing.JButton btnIniciar;
+    private javax.swing.JButton btnModificarUsuario;
     private javax.swing.JButton btnNuevaVenta;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoPro;
@@ -2431,6 +2557,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JButton btnPdfVentas;
     private javax.swing.JButton btnProductos;
     private javax.swing.JButton btnProveedor;
+    private javax.swing.JButton btnRegistrarUsuario;
     private javax.swing.JButton btnUsuarios;
     private javax.swing.JButton btnVentas;
     private javax.swing.JButton btnguardarProveedor;
