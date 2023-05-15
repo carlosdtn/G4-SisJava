@@ -19,7 +19,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
-        txtCorreo.setText("carlos@hotmail.com");
+        txtCorreo.setText("admin@gmail.com");
         barra.setVisible(false);
     }
     public class BarraProgreso implements ActionListener {

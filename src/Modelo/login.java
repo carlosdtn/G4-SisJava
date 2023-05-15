@@ -10,12 +10,6 @@ public class login {
 
     public login() {
     }
-    /*
-        Se crea una clase pública aparte donde irá la lógica 
-        para encriptar la contraseña, esta clase debe tener
-        un método estático que encripte cuanddo se pase como parámetro
-        un string(contraseña).
-    */
 
     public login(int id, String nombre, String correo, String pass, String rol) {
         this.id = id;
@@ -50,10 +44,6 @@ public class login {
         this.correo = correo;
     }
 
-    /*
-        Se llama al método estático y se le pasa como argumento
-        la contraseña.
-    */
     public String getPass() {
         return pass;
     }

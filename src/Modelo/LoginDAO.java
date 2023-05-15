@@ -17,9 +17,10 @@ public class LoginDAO {
     Conexion cn = new Conexion();
     
     /*
-        Dado que se realiza una instancia dentro del
-        método log, al registrar e iniciar sesión, la contraseña
-        encriptada devuelta es la misma debido al método estático.
+        MODIFICACIÓN
+        @Carlos Tarmeño
+        - Se verifica que la contraseña del label y la contraseña coincidan con el hash almacenado.
+        - Si coinciden entonces se establece la contraseña hasheada para la autenticación.
     */
     public login log(String correo, String pass){
         login l = new login();
@@ -45,8 +46,10 @@ public class LoginDAO {
         return l;
     }
     /*
-        En la BD la contraseña se estaría guardando como un código cifrado
-        al momento de de ejecutar la query para insertar los datos del usuario.
+        MODIFICACIÓN
+        @Carlos Tarmeño
+        - Al realizar el registro se llama al método estático 'encriptarPassword' que recibe la contraseña y retorna una contraseña hasheada.
+        - La contraseña hasheada se inserta en la BD.
     */
     public boolean Registrar(login reg){
         String sql = "INSERT INTO usuarios (nombre, correo, pass, rol) VALUES (?,?,?,?)";
