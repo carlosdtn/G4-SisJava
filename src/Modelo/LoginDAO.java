@@ -1,12 +1,14 @@
 
 package Modelo;
 
+import static Modelo.Utilidades.encriptarPassword;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class LoginDAO {
     Connection con;
@@ -21,20 +23,21 @@ public class LoginDAO {
     */
     public login log(String correo, String pass){
         login l = new login();
-        String sql = "SELECT * FROM usuarios WHERE correo = ? AND pass = ?";
+        String sql = "SELECT * FROM usuarios WHERE correo = ?";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, correo);
-            ps.setString(2, pass);
             rs= ps.executeQuery();
             if (rs.next()) {
-                l.setId(rs.getInt("id"));
-                l.setNombre(rs.getString("nombre"));
-                l.setCorreo(rs.getString("correo"));
-                l.setPass(rs.getString("pass"));
-                l.setRol(rs.getString("rol"));
-                
+                String hashedPassword = rs.getString("pass");
+                if (BCrypt.verifyer().verify(pass.toCharArray(), hashedPassword).verified) { // Verificar la contraseña encriptada
+                    l.setId(rs.getInt("id"));
+                    l.setNombre(rs.getString("nombre"));
+                    l.setCorreo(rs.getString("correo"));
+                    l.setPass(rs.getString("pass"));
+                    l.setRol(rs.getString("rol"));
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -52,7 +55,8 @@ public class LoginDAO {
             ps = con.prepareStatement(sql);
             ps.setString(1, reg.getNombre());
             ps.setString(2, reg.getCorreo());
-            ps.setString(3, reg.getPass());
+            String hashedPassword = encriptarPassword(reg.getPass()); // Encriptar la contraseña
+            ps.setString(3, hashedPassword);
             ps.setString(4, reg.getRol());
             ps.execute();
             return true;
