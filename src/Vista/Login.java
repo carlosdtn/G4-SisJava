@@ -2,6 +2,7 @@
 package Vista;
 
 import Modelo.LoginDAO;
+import Modelo.Utilidades;
 import Modelo.login;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +20,6 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         txtCorreo.setText("admin@gmail.com");
-        txtPass.setText("admin");
         barra.setVisible(false);
     }
     public class BarraProgreso implements ActionListener {
