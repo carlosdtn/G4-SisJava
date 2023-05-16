@@ -1,6 +1,12 @@
+//Cachique Falcon Williams Eduardo   -   19200272 
 
 package Modelo;
 
+
+/*
+    Aqui tenemos la clase de Productos, donde se tiene el metodo constructor para la clase, ademas de los getters y setters 
+    para poder utilizarlos desde los objetos que hereden estos metodos. 
+*/
 
 public class Productos {
     private int id;
@@ -81,5 +87,8 @@ public class Productos {
         this.precio = precio;
     }
 
-   
+   /*
+    Considero que aqui deberia ir un metodo que permita evaluar la cantidad minima de productos 
+    y crear la vista ncesesaria para colacar un JPanel y se pueda visualizar
+    */
 }
