@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 public class ProductosDao {
     Connection con;
@@ -29,6 +31,22 @@ public class ProductosDao {
         } catch (SQLException e) {
             System.out.println(e.toString());
             return false;
+        }
+    }
+    
+    // Procedimiento para rellenar el listado de productos
+    public void RellenarComboProd(JComboBox combo){
+        String sql = "SELECT * FROM productos";
+        try{
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            combo.removeAllItems();
+            while(rs.next()){
+                combo.addItem(rs.getString("nombre"));
+            }
+        } catch(SQLException e){
+            JOptionPane.showMessageDialog(null,"ERROR" + e.toString());
         }
     }
     
@@ -118,6 +136,28 @@ public class ProductosDao {
         }
         return producto;
     }
+    // Busqueda del producto por nombre
+    
+        public Productos BuscarProNom(String nom){
+        Productos producto = new Productos();
+        String sql = "SELECT * FROM productos WHERE nombre = ?";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1,nom);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                producto.setId(rs.getInt("id"));
+                producto.setCodigo(rs.getString("codigo"));
+                producto.setPrecio(rs.getDouble("precio"));
+                producto.setStock(rs.getInt("stock"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return producto;
+    }
+    
     public Productos BuscarId(int id){
         Productos pro = new Productos();
         String sql = "SELECT pr.id AS id_proveedor, pr.nombre AS nombre_proveedor, p.* FROM proveedor pr INNER JOIN productos p ON p.proveedor = pr.id WHERE p.id = ?";
