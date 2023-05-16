@@ -233,7 +233,6 @@ public final class Sistema extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtCodigoVenta = new javax.swing.JTextField();
-        txtDescripcionVenta = new javax.swing.JTextField();
         txtCantidadVenta = new javax.swing.JTextField();
         txtPrecioVenta = new javax.swing.JTextField();
         txtStockDisponible = new javax.swing.JTextField();
@@ -260,6 +259,7 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel23 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
+        jComboNomProd = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TableCliente = new javax.swing.JTable();
@@ -612,20 +612,6 @@ public final class Sistema extends javax.swing.JFrame {
         });
         jPanel2.add(txtCodigoVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 100, 30));
 
-        txtDescripcionVenta.setBackground(new java.awt.Color(204, 204, 204));
-        txtDescripcionVenta.setBorder(null);
-        txtDescripcionVenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionVentaActionPerformed(evt);
-            }
-        });
-        txtDescripcionVenta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionVentaKeyTyped(evt);
-            }
-        });
-        jPanel2.add(txtDescripcionVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 190, 30));
-
         txtCantidadVenta.setBackground(new java.awt.Color(204, 204, 204));
         txtCantidadVenta.setBorder(null);
         txtCantidadVenta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -857,6 +843,19 @@ public final class Sistema extends javax.swing.JFrame {
         );
 
         jPanel2.add(jPanel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 410, 180, -1));
+
+        jComboNomProd.setBackground(new java.awt.Color(204, 204, 204));
+        jComboNomProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboNomProdActionPerformed(evt);
+            }
+        });
+        jComboNomProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jComboNomProdKeyPressed(evt);
+            }
+        });
+        jPanel2.add(jComboNomProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 72, 190, 30));
 
         jTabbedPane1.addTab("0", jPanel2);
 
@@ -2182,12 +2181,14 @@ public final class Sistema extends javax.swing.JFrame {
         event.numberKeyPress(evt);
     }//GEN-LAST:event_txtCantidadVentaKeyTyped
 
+    // Cambio por la nueva lista de productos mostrados en descripción
+    
     private void txtCantidadVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (!"".equals(txtCantidadVenta.getText())) {
                 int id = Integer.parseInt(txtIdPro.getText());
-                String descripcion = txtDescripcionVenta.getText();
+                String descripcion = jComboNomProd.getSelectedItem().toString();
                 int cant = Integer.parseInt(txtCantidadVenta.getText());
                 double precio = Double.parseDouble(txtPrecioVenta.getText());
                 double total = cant * precio;
@@ -2196,7 +2197,7 @@ public final class Sistema extends javax.swing.JFrame {
                     item = item + 1;
                     tmp = (DefaultTableModel) TableVenta.getModel();
                     for (int i = 0; i < TableVenta.getRowCount(); i++) {
-                        if (TableVenta.getValueAt(i, 1).equals(txtDescripcionVenta.getText())) {
+                        if (TableVenta.getValueAt(i, 1).equals(jComboNomProd.getSelectedItem().toString())) {
                             JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
                             return;
                         }
@@ -2228,37 +2229,33 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtCantidadVentaKeyPressed
 
-    private void txtDescripcionVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionVentaKeyTyped
-        // TODO add your handling code here:
-        event.textKeyPress(evt);
-    }//GEN-LAST:event_txtDescripcionVentaKeyTyped
-
     private void txtCodigoVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaKeyTyped
         // TODO add your handling code here:
         event.numberKeyPress(evt);
     }//GEN-LAST:event_txtCodigoVentaKeyTyped
 
+    // Ya no se necesita buscar en base al código desconocido
     private void txtCodigoVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaKeyPressed
         // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (!"".equals(txtCodigoVenta.getText())) {
-                String cod = txtCodigoVenta.getText();
-                pro = proDao.BuscarPro(cod);
-                if (pro.getNombre() != null) {
-                    txtIdPro.setText("" + pro.getId());
-                    txtDescripcionVenta.setText("" + pro.getNombre());
-                    txtPrecioVenta.setText("" + pro.getPrecio());
-                    txtStockDisponible.setText("" + pro.getStock());
-                    txtCantidadVenta.requestFocus();
-                } else {
-                    LimparVenta();
-                    txtCodigoVenta.requestFocus();
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese el codigo del productos");
-                txtCodigoVenta.requestFocus();
-            }
-        }
+//        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+//            if (!"".equals(txtCodigoVenta.getText())) {
+//                String cod = txtCodigoVenta.getText();
+//                pro = proDao.BuscarPro(cod);
+//                if (pro.getNombre() != null) {
+//                    txtIdPro.setText("" + pro.getId());
+//                    txtDescripcionVenta.setText("" + pro.getNombre());
+//                    txtPrecioVenta.setText("" + pro.getPrecio());
+//                    txtStockDisponible.setText("" + pro.getStock());
+//                    txtCantidadVenta.requestFocus();
+//                } else {
+//                    LimparVenta();
+//                    txtCodigoVenta.requestFocus();
+//                }
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Ingrese el codigo del productos");
+//                txtCodigoVenta.requestFocus();
+//            }
+//        }
     }//GEN-LAST:event_txtCodigoVentaKeyPressed
 
     private void txtDniClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniClienteKeyTyped
@@ -2333,10 +2330,6 @@ public final class Sistema extends javax.swing.JFrame {
     private void txtCodigoVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoVentaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoVentaActionPerformed
-
-    private void txtDescripcionVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionVentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionVentaActionPerformed
 
     private void cbxRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxRolActionPerformed
         // TODO add your handling code here:
@@ -2489,6 +2482,36 @@ public final class Sistema extends javax.swing.JFrame {
         }        // TODO add your handling code here:
     }//GEN-LAST:event_TableUsuariosMouseClicked
 
+    private void jComboNomProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboNomProdActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jComboNomProdActionPerformed
+
+    // ComboBox para seleccionar los productos y rellenarlos automáticamente con toda su información
+    private void jComboNomProdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jComboNomProdKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!"".equals(jComboNomProd.getSelectedItem())) {
+                String nom = jComboNomProd.getSelectedItem().toString();
+                System.out.println(nom);
+                pro = proDao.BuscarProNom(nom);
+                if (pro.getCodigo() != null) {
+                    txtIdPro.setText("" + pro.getId());
+                    txtCodigoVenta.setText(""+pro.getCodigo());
+                    txtPrecioVenta.setText("" + pro.getPrecio());
+                    txtStockDisponible.setText("" + pro.getStock());
+                    txtCantidadVenta.requestFocus();
+                } else {
+                    LimparVenta();
+                    jComboNomProd.requestFocus();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese el codigo del productos");
+                txtCodigoVenta.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_jComboNomProdKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -2563,6 +2586,7 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JButton btnguardarProveedor;
     private javax.swing.JComboBox<Object> cbxProveedorPro;
     private javax.swing.JComboBox<String> cbxRol;
+    private javax.swing.JComboBox<String> jComboNomProd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2665,7 +2689,6 @@ public final class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txtCodigoVenta;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDesPro;
-    private javax.swing.JTextField txtDescripcionVenta;
     private javax.swing.JTextField txtDireccionConfig;
     private javax.swing.JTextField txtDireccionProveedor;
     private javax.swing.JTextField txtDirecionCliente;
@@ -2731,7 +2754,7 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void LimparVenta() {
         txtCodigoVenta.setText("");
-        txtDescripcionVenta.setText("");
+        //txtDescripcionVenta.setText("");
         txtCantidadVenta.setText("");
         txtStockDisponible.setText("");
         txtPrecioVenta.setText("");
