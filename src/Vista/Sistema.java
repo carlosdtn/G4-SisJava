@@ -36,6 +36,9 @@ import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Component;
+import javax.swing.JTable;
 
 public final class Sistema extends javax.swing.JFrame {
 
@@ -158,12 +161,44 @@ public final class Sistema extends javax.swing.JFrame {
             ob[4] = ListarPro.get(i).getStock();
             ob[5] = ListarPro.get(i).getPrecio();
             modelo.addRow(ob);
+                        
         }
         TableProducto.setModel(modelo);
         JTableHeader header = TableProducto.getTableHeader();
         header.setOpaque(false);
         header.setBackground(new Color(0, 110, 255));
         header.setForeground(Color.white);
+        
+        //Determinar la posicion del atributo stock 
+        int posicionStock = 4;
+        //Determinar el stock limite 
+        int alertStockLimit = 7;
+        //Determinar el color de las filas que no cumplan la condicion
+        Color alertLimitColor = Color.RED;
+        //Determinar el color de las filas que si cumplan la condicion
+        Color defaultColor = Color.GREEN;
+        
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (isSelected) {
+                setBackground(table.getSelectionBackground());
+            } else {
+                int stockProducto = Integer.parseInt(table.getValueAt(row, posicionStock).toString());
+                if (stockProducto <= alertStockLimit) {
+                    setBackground(alertLimitColor);
+                } else {
+                    setBackground(defaultColor);
+                }
+            }
+            return this;
+        }
+        };
+
+        for (int i = 0; i < TableProducto.getColumnCount(); i++) {
+            TableProducto.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        }
     }
 
     public void ListarConfig() {
