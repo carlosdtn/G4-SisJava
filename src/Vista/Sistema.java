@@ -5,20 +5,20 @@
  */
 package Vista;
 
-import Modelo.Cliente;
-import Modelo.ClienteDao;
-import Modelo.Combo;
-import Modelo.Config;
-import Modelo.Detalle;
-import Modelo.Eventos;
-import Modelo.LoginDAO;
-import Modelo.Productos;
-import Modelo.ProductosDao;
-import Modelo.Proveedor;
-import Modelo.ProveedorDao;
-import Modelo.Venta;
-import Modelo.VentaDao;
-import Modelo.login;
+import modelo.Cliente;
+import modelo.ClienteDao;
+import modelo.Combo;
+import modelo.Config;
+import modelo.Detalle;
+import modelo.Eventos;
+import modelo.LoginDAO;
+import modelo.Productos;
+import modelo.ProductosDao;
+import modelo.Proveedor;
+import modelo.ProveedorDao;
+import modelo.Venta;
+import modelo.VentaDao;
+import modelo.login;
 import Reportes.Grafico;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -2817,7 +2817,7 @@ public final class Sistema extends javax.swing.JFrame {
             int id_pro = Integer.parseInt(TableVenta.getValueAt(i, 0).toString());
             int cant = Integer.parseInt(TableVenta.getValueAt(i, 2).toString());
             double precio = Double.parseDouble(TableVenta.getValueAt(i, 3).toString());
-            Dv.setId_pro(id_pro);
+            Dv.setIdPro(id_pro);
             Dv.setCantidad(cant);
             Dv.setPrecio(precio);
             Dv.setId(id);

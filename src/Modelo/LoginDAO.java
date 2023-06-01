@@ -1,6 +1,6 @@
-package Modelo;
+package modelo;
 
-import static Modelo.Utilidades.encriptarPassword;
+import static modelo.Utilidades.encriptarPassword;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
