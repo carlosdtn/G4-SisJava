@@ -16,6 +16,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -150,152 +151,190 @@ public class VentaDao {
         }
         return cl;
     }
+    /*
+        MODIFICACIÓN
+        @Carlos Tarmeño
+        - Inicialmente la función pdfV tenía 145 líneas de código.
+        - Se identificó un code smell de tipo 'Long Method' en el método pdfV.
+        - Se aplicó la ténica 'Extract Method' para hacer la refactorización.
+        - Se dividió el código en funciones que engloban lo específico de
+          cada parte del código en general, se tienen los métodos:
+            -> generarDatosCliente
+            -> generarTablaProductos
+            -> generarInfoTotal
+            -> generarFirma
+            -> generarMensaje
+    */
+    
     public void pdfV(int idventa, int Cliente, double total, String usuario) {
         try {
-            Date date = new Date();
-            FileOutputStream archivo;
-            String url = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
-            File salida = new File(url + File.separator + "venta.pdf");
-            archivo = new FileOutputStream(salida);
-            Document doc = new Document();
-            PdfWriter.getInstance(doc, archivo);
-            doc.open();
-            Image img = Image.getInstance(getClass().getResource("/Img/logo_pdf.png"));
-            //Fecha
-            Paragraph fecha = new Paragraph();
-            Font negrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLUE);
-            fecha.add(Chunk.NEWLINE);
-            fecha.add("Vendedor: " + usuario + "\nFolio: " + idventa + "\nFecha: "
-                    + new SimpleDateFormat("dd/MM/yyyy").format(date) + "\n\n");
-            PdfPTable Encabezado = new PdfPTable(4);
-            Encabezado.setWidthPercentage(100);
-            Encabezado.getDefaultCell().setBorder(0);
-            float[] columnWidthsEncabezado = new float[]{20f, 30f, 70f, 40f};
-            Encabezado.setWidths(columnWidthsEncabezado);
-            Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
-            Encabezado.addCell(img);
-            Encabezado.addCell("");
-            //info empresa
-            String config = "SELECT * FROM config";
-            String mensaje = "";
-            try {
-                con = cn.getConnection();
-                ps = con.prepareStatement(config);
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    mensaje = rs.getString("mensaje");
-                    Encabezado.addCell("Ruc:    " + rs.getString("ruc") + "\nNombre: " + rs.getString("nombre") + "\nTeléfono: " + rs.getString("telefono") + "\nDirección: " + rs.getString("direccion") + "\n\n");
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
-            //
-            Encabezado.addCell(fecha);
-            doc.add(Encabezado);
-            //cliente
-            Paragraph cli = new Paragraph();
-            cli.add(Chunk.NEWLINE);
-            cli.add("DATOS DEL CLIENTE" + "\n\n");
-            doc.add(cli);
-
-            PdfPTable proveedor = new PdfPTable(3);
-            proveedor.setWidthPercentage(100);
-            proveedor.getDefaultCell().setBorder(0);
-            float[] columnWidthsCliente = new float[]{50f, 25f, 25f};
-            proveedor.setWidths(columnWidthsCliente);
-            proveedor.setHorizontalAlignment(Element.ALIGN_LEFT);
-            PdfPCell cliNom = new PdfPCell(new Phrase("Nombre", negrita));
-            PdfPCell cliTel = new PdfPCell(new Phrase("Télefono", negrita));
-            PdfPCell cliDir = new PdfPCell(new Phrase("Dirección", negrita));
-            cliNom.setBorder(Rectangle.NO_BORDER);
-            cliTel.setBorder(Rectangle.NO_BORDER);
-            cliDir.setBorder(Rectangle.NO_BORDER);
-            proveedor.addCell(cliNom);
-            proveedor.addCell(cliTel);
-            proveedor.addCell(cliDir);
-            String prove = "SELECT * FROM clientes WHERE id = ?";
-            try {
-                ps = con.prepareStatement(prove);
-                ps.setInt(1, Cliente);
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    proveedor.addCell(rs.getString("nombre"));
-                    proveedor.addCell(rs.getString("telefono"));
-                    proveedor.addCell(rs.getString("direccion") + "\n\n");
-                } else {
-                    proveedor.addCell("Publico en General");
-                    proveedor.addCell("S/N");
-                    proveedor.addCell("S/N" + "\n\n");
-                }
-
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
-            doc.add(proveedor);
-
-            PdfPTable tabla = new PdfPTable(4);
-            tabla.setWidthPercentage(100);
-            tabla.getDefaultCell().setBorder(0);
-            float[] columnWidths = new float[]{10f, 50f, 15f, 15f};
-            tabla.setWidths(columnWidths);
-            tabla.setHorizontalAlignment(Element.ALIGN_LEFT);
-            PdfPCell c1 = new PdfPCell(new Phrase("Cant.", negrita));
-            PdfPCell c2 = new PdfPCell(new Phrase("Descripción.", negrita));
-            PdfPCell c3 = new PdfPCell(new Phrase("P. unt.", negrita));
-            PdfPCell c4 = new PdfPCell(new Phrase("P. Total", negrita));
-            c1.setBorder(Rectangle.NO_BORDER);
-            c2.setBorder(Rectangle.NO_BORDER);
-            c3.setBorder(Rectangle.NO_BORDER);
-            c4.setBorder(Rectangle.NO_BORDER);
-            c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            c2.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            c3.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            c4.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            tabla.addCell(c1);
-            tabla.addCell(c2);
-            tabla.addCell(c3);
-            tabla.addCell(c4);
-            String product = "SELECT d.id, d.id_pro,d.id_venta, d.precio, d.cantidad, p.id, p.nombre FROM detalle d INNER JOIN productos p ON d.id_pro = p.id WHERE d.id_venta = ?";
-            try {
-                ps = con.prepareStatement(product);
-                ps.setInt(1, idventa);
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    double subTotal = rs.getInt("cantidad") * rs.getDouble("precio");
-                    tabla.addCell(rs.getString("cantidad"));
-                    tabla.addCell(rs.getString("nombre"));
-                    tabla.addCell(rs.getString("precio"));
-                    tabla.addCell(String.valueOf(subTotal));
-                }
-
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
-            doc.add(tabla);
-            Paragraph info = new Paragraph();
-            info.add(Chunk.NEWLINE);
-            info.add("Total S/: " + total);
-            info.setAlignment(Element.ALIGN_RIGHT);
-            doc.add(info);
-            Paragraph firma = new Paragraph();
-            firma.add(Chunk.NEWLINE);
-            firma.add("Cancelacion \n\n");
-            firma.add("------------------------------------\n");
-            firma.add("Firma \n");
-            firma.setAlignment(Element.ALIGN_CENTER);
-            doc.add(firma);
-            Paragraph gr = new Paragraph();
-            gr.add(Chunk.NEWLINE);
-            gr.add(mensaje);
-            gr.setAlignment(Element.ALIGN_CENTER);
-            doc.add(gr);
-            doc.close();
-            archivo.close();
+            File salida = generarPDF(idventa, Cliente, total, usuario);
             Desktop.getDesktop().open(salida);
         } catch (DocumentException | IOException e) {
             System.out.println(e.toString());
         }
     }
-
     
+    private File generarPDF(int idventa,int Cliente, double total, String usuario) throws DocumentException, IOException {
+        Date date = new Date();
+        FileOutputStream archivo;
+        String url = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+        File salida = new File(url + File.separator + "venta.pdf");
+        archivo = new FileOutputStream(salida);
+        Document doc = new Document();
+        PdfWriter.getInstance(doc, archivo);
+        doc.open();
+        String mensaje = generarEncabezado(doc, usuario, idventa, date);
+        generarDatosCliente(doc, Cliente);
+        generarTablaProductos(doc, idventa);
+        generarInfoTotal(doc, total);
+        generarFirma(doc);
+        generarMensaje(doc, mensaje);
+        doc.close();
+        archivo.close();
+        
+        return salida;
+    }
+    private String generarEncabezado(Document doc, String usuario, int idventa, Date date) throws DocumentException, IOException {
+        Image img = Image.getInstance(getClass().getResource("/Img/logo_pdf.png"));
+        Paragraph fecha = new Paragraph();
+        fecha.add(Chunk.NEWLINE);
+        fecha.add("Vendedor: " + usuario + "\nFolio: " + idventa + "\nFecha: "
+                + new SimpleDateFormat("dd/MM/yyyy").format(date) + "\n\n");
+        PdfPTable encabezado = new PdfPTable(4);
+        encabezado.setWidthPercentage(100);
+        encabezado.getDefaultCell().setBorder(0);
+        float[] columnWidthsEncabezado = new float[]{20f, 30f, 70f, 40f};
+        encabezado.setWidths(columnWidthsEncabezado);
+        encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
+        encabezado.addCell(img);
+        encabezado.addCell("");
+        String config = "SELECT * FROM config";
+        String mensaje = "";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(config);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                mensaje = rs.getString("mensaje");
+                encabezado.addCell("Ruc:    " + rs.getString("ruc") + "\nNombre: " + rs.getString("nombre") + "\nTeléfono: " + rs.getString("telefono") + "\nDirección: " + rs.getString("direccion") + "\n\n");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        encabezado.addCell(fecha);
+        doc.add(encabezado);
+        
+        return mensaje;
+    }
+   
+    private void generarDatosCliente(Document doc, int Cliente) throws DocumentException {
+        Font negrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLUE);
+        Paragraph cli = new Paragraph();
+        cli.add(Chunk.NEWLINE);
+        cli.add("DATOS DEL CLIENTE" + "\n\n");
+        doc.add(cli);
+
+        PdfPTable proveedor = new PdfPTable(3);
+        proveedor.setWidthPercentage(100);
+        proveedor.getDefaultCell().setBorder(0);
+        float[] columnWidthsCliente = new float[]{50f, 25f, 25f};
+        proveedor.setWidths(columnWidthsCliente);
+        proveedor.setHorizontalAlignment(Element.ALIGN_LEFT);
+        PdfPCell cliNom = new PdfPCell(new Phrase("Nombre", negrita));
+        PdfPCell cliTel = new PdfPCell(new Phrase("Télefono", negrita));
+        PdfPCell cliDir = new PdfPCell(new Phrase("Dirección", negrita));
+        cliNom.setBorder(Rectangle.NO_BORDER);
+        cliTel.setBorder(Rectangle.NO_BORDER);
+        cliDir.setBorder(Rectangle.NO_BORDER);
+        proveedor.addCell(cliNom);
+        proveedor.addCell(cliTel);
+        proveedor.addCell(cliDir);
+        String prove = "SELECT * FROM clientes WHERE id = ?";
+        try {
+            ps = con.prepareStatement(prove);
+            ps.setInt(1, Cliente);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                proveedor.addCell(rs.getString("nombre"));
+                proveedor.addCell(rs.getString("telefono"));
+                proveedor.addCell(rs.getString("direccion") + "\n\n");
+            } else {
+                proveedor.addCell("Publico en General");
+                proveedor.addCell("S/N");
+                proveedor.addCell("S/N" + "\n\n");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        doc.add(proveedor);
+    }
+    
+    private void generarTablaProductos(Document doc, int idventa) throws DocumentException {
+        Font negrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLUE);
+        PdfPTable tabla = new PdfPTable(4);
+        tabla.setWidthPercentage(100);
+        tabla.getDefaultCell().setBorder(0);
+        float[] columnWidths = new float[]{10f, 50f, 15f, 15f};
+        tabla.setWidths(columnWidths);
+        tabla.setHorizontalAlignment(Element.ALIGN_LEFT);
+        PdfPCell c1 = new PdfPCell(new Phrase("Cant.", negrita));
+        PdfPCell c2 = new PdfPCell(new Phrase("Descripción.", negrita));
+        PdfPCell c3 = new PdfPCell(new Phrase("P. unt.", negrita));
+        PdfPCell c4 = new PdfPCell(new Phrase("P. Total", negrita));
+        c1.setBorder(Rectangle.NO_BORDER);
+        c2.setBorder(Rectangle.NO_BORDER);
+        c3.setBorder(Rectangle.NO_BORDER);
+        c4.setBorder(Rectangle.NO_BORDER);
+        c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        c2.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        c3.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        c4.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        tabla.addCell(c1);
+        tabla.addCell(c2);
+        tabla.addCell(c3);
+        tabla.addCell(c4);
+        String product = "SELECT d.id, d.id_pro,d.id_venta, d.precio, d.cantidad, p.id, p.nombre FROM detalle d INNER JOIN productos p ON d.id_pro = p.id WHERE d.id_venta = ?";
+        try {
+            ps = con.prepareStatement(product);
+            ps.setInt(1, idventa);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                double subTotal = rs.getInt("cantidad") * rs.getDouble("precio");
+                tabla.addCell(rs.getString("cantidad"));
+                tabla.addCell(rs.getString("nombre"));
+                tabla.addCell(rs.getString("precio"));
+                tabla.addCell(String.valueOf(subTotal));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        doc.add(tabla);
+    }
+
+    private void generarInfoTotal(Document doc, double total) throws DocumentException {
+        Paragraph info = new Paragraph();
+        info.add(Chunk.NEWLINE);
+        info.add("Total S/: " + total);
+        info.setAlignment(Element.ALIGN_RIGHT);
+        doc.add(info);
+    }
+
+    private void generarFirma(Document doc) throws DocumentException {
+        Paragraph firma = new Paragraph();
+        firma.add(Chunk.NEWLINE);
+        firma.add("Cancelacion \n\n");
+        firma.add("------------------------------------\n");
+        firma.add("Firma \n");
+        firma.setAlignment(Element.ALIGN_CENTER);
+        doc.add(firma);
+    }
+
+    private void generarMensaje(Document doc, String mensaje) throws DocumentException {
+        Paragraph gr = new Paragraph();
+        gr.add(Chunk.NEWLINE);
+        gr.add(mensaje);
+        gr.setAlignment(Element.ALIGN_CENTER);
+        doc.add(gr);
+    } 
 }
