@@ -90,16 +90,7 @@ public class LoginDAO {
             System.out.println(e.toString());
             return false;
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close(); // cerrar la conexión
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            cerrarRecursos(con, ps);
         }
     }
   
@@ -185,16 +176,7 @@ public class LoginDAO {
             System.out.println(e.toString());
             return false;
         } finally {
-             try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
+            cerrarRecursos(con, ps);
         }
     }
     
@@ -210,16 +192,20 @@ public class LoginDAO {
             System.out.println(e.toString());
             return false;
         } finally {
-             try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.toString());
+            cerrarRecursos(con, ps);
+        }
+    }
+    
+    public void cerrarRecursos(Connection con, PreparedStatement ps) {
+        try {
+            if (ps != null) {
+                ps.close();
             }
+            if (con != null) {
+                con.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
         }
     }
 }
