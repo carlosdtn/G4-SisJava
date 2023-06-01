@@ -1,5 +1,5 @@
 
-package Modelo;
+package modelo;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -79,7 +79,7 @@ public class VentaDao {
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setInt(1, Dv.getId_pro());
+            ps.setInt(1, Dv.getIdPro());
             ps.setInt(2, Dv.getCantidad());
             ps.setDouble(3, Dv.getPrecio());
             ps.setInt(4, Dv.getId());

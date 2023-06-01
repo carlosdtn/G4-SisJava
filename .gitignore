@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 /build
 /nbproject
 
 jcommon-1.0.23.jar
+=======
+./build
+./nbproject
+/dist/
+/bin/build/
+/bin/nbproject/private/
+>>>>>>> CachiqueWilliams

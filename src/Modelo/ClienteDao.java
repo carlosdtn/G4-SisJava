@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package modelo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author USUARIO
+ * Cambios: Ramos Salinas, Maicol
+ * Validacion de datos antes de ser agregados a la BD
  */
 public class ClienteDao {
     
@@ -28,6 +30,12 @@ public class ClienteDao {
         String sql = "INSERT INTO clientes (dni, nombre, telefono, direccion) VALUES (?,?,?,?)";
         try {
             con = cn.getConnection();
+            //Se verifica si el usuario registrado ya existe
+            if (clienteExiste(cl.getDni())) {
+                JOptionPane.showMessageDialog(null, "El cliente ya está registrado");
+                return false;
+            }
+            
             ps = con.prepareStatement(sql);
             ps.setString(1, cl.getDni());
             ps.setString(2, cl.getNombre());
@@ -130,5 +138,16 @@ public class ClienteDao {
        }
        return cl;
    }
-   
+
+   //Metodo que valida la existencia de un usuario
+    private boolean clienteExiste(String dni) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM clientes WHERE dni = ?";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, dni);
+        rs = ps.executeQuery();
+        rs.next();
+        int count = rs.getInt(1);
+        return count > 0;
+    }
+
 }
