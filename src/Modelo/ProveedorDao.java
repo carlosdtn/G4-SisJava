@@ -43,20 +43,29 @@ public class ProveedorDao {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while (rs.next()) {                
+            
+            Listapr = mapearProveedores(rs);
+            
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return Listapr;
+    }
+    
+    private List<Proveedor> mapearProveedores(ResultSet rs) throws SQLException{
+        List<Proveedor> listaProveedor = new ArrayList<>();
+        
+        while (rs.next()) {                
                 Proveedor pr = new Proveedor();
                 pr.setId(rs.getInt("id"));
                 pr.setRuc(rs.getString("ruc"));
                 pr.setNombre(rs.getString("nombre"));
                 pr.setTelefono(rs.getString("telefono"));
                 pr.setDireccion(rs.getString("direccion"));
-                Listapr.add(pr);
+                listaProveedor.add(pr);
             }
-            
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
-        return Listapr;
+        
+        return listaProveedor;
     }
     
     public boolean EliminarProveedor(int id){
