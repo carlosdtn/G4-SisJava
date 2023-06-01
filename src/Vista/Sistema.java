@@ -169,6 +169,10 @@ public final class Sistema extends javax.swing.JFrame {
         header.setBackground(new Color(0, 110, 255));
         header.setForeground(Color.white);
         
+        pintarTablaLimitProducto();
+    }
+
+    void pintarTablaLimitProducto(){
         //Determinar la posicion del atributo stock 
         int posicionStock = 4;
         //Determinar el stock limite 
@@ -200,7 +204,7 @@ public final class Sistema extends javax.swing.JFrame {
             TableProducto.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
     }
-
+    
     public void ListarConfig() {
         conf = proDao.BuscarDatos();
         txtIdConfig.setText("" + conf.getId());
