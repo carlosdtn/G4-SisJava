@@ -1,6 +1,6 @@
 //Cachique Falcon Williams Eduardo   -   19200272 
 
-package Modelo;
+package modelo;
 
 
 /*

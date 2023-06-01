@@ -1,5 +1,5 @@
 
-package Modelo;
+package modelo;
 
 public class Venta {
     private int id;

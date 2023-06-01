@@ -1,5 +1,5 @@
 
-package Modelo;
+package modelo;
 
 public class login {
     private int id;
